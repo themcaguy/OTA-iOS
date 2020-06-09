@@ -1,0 +1,219 @@
+
+<html>
+<body>
+	<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+	<div id="msg" width="200px" height="200px"></div>
+	
+		<div id="draggable">
+            <div style="padding: 20px">
+                <video id="video" width="180" height="100" autoplay="true"></video>
+                <canvas id="canvas" width="788" height="388" style="display: block;"></canvas>
+            </div>
+        </div>
+		
+<div class="controls">
+    <input type="button" value="Click" onclick="objWebcamHandler.AutoImageCaptureUploadPicSuccess();" class="btn btn-outline-success screenshot d-none" title="ScreenShot"><i data-feather="image"></i></input>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+
+
+
+var WebcamHandler = function () { }
+
+WebcamHandler.prototype = {
+    video: null, canvas: null, con: null, imgIndex: 0, isImageTaken: false, NoSimilarityCaputedTime: "", OtherFacesCapturedTime: "", EmptyScreenCapturedTime: "", TotalNotificationCount: 0,
+    NotSimilarityCount: 0, OtherfaceCount: 0, EmptyScreenCount: 0, ThresholdLimit: null,
+    WebCamIntialize: function () {
+        try {
+            window.addEventListener("DOMContentLoaded", function () {
+                // Grab elements, create settings, etc.
+                var canvas = document.getElementById("canvas"),
+                    context = canvas.getContext("2d"),
+                    video = document.getElementById("video"),
+                    videoObj = { "video": true },
+                    errBack = function (error) {
+                        console.log("Video capture error: ", error.code);
+                    };
+
+                // Put video listeners into place
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Not adding `{ audio: true }` since we only want video now
+                    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    });//.catch(error => console.error('getUserMedia() error:', error));
+                } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+                    navigator.webkitGetUserMedia(videoObj, function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    }, errBack);
+                }
+                else if (navigator.mozGetUserMedia) { // Firefox-prefixed
+                    navigator.mozGetUserMedia(videoObj, function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    }, errBack);
+                }
+            },
+                false);
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            con = canvas.getContext('2d');
+        }
+        catch (e) { }
+    },
+	LoadWebCamByCall: function () {
+        try {
+                // Grab elements, create settings, etc.
+                var canvas = document.getElementById("canvas"),
+                    context = canvas.getContext("2d"),
+                    video = document.getElementById("video"),
+                    videoObj = { "video": true },
+                    errBack = function (error) {
+                        Test.TestInfo.IsTestTerminated = true;
+                        CloseTest(Message.UNABLETOSTARTTEST);
+                        console.log("Video capture error: ", error.code);
+                    };
+
+                // Put video listeners into place
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Not adding `{ audio: true }` since we only want video now
+                    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    });//.catch(error => console.error('getUserMedia() error:', error));
+                } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+                    navigator.webkitGetUserMedia(videoObj, function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    }, errBack);
+                }
+                else if (navigator.mozGetUserMedia) { // Firefox-prefixed
+                    navigator.mozGetUserMedia(videoObj, function (stream) {
+                        if (typeof (video.srcObject) != 'undefined')
+                            video.srcObject = stream;
+                        else
+                            video.src = window.URL.createObjectURL(stream);
+                        video.play();
+                    }, errBack);
+                }
+        }
+        catch (e) { }
+    },
+    WebCameventListener: function () {
+        try {
+            var ImageCaptureInterval, timeSpent, w = 788, h = 388;
+            if (1 == 1) {
+                ImageCaptureInterval = 15000;
+                CapInterval = setInterval(function () {
+                    if (video.paused || video.ended) return;
+                    con.fillRect(0, 0, w, h);
+                    con.drawImage(video, 0, 0, w, h);
+                    objWebcamHandler.imgIndex++;
+					document.getElementById("msg").innerHTML += " Captured";
+                    if (objWebcamHandler.isImageTaken) objWebcamHandler.AutoImageCapture();
+                }, 1000);
+            }
+            else {
+            }
+        }
+        catch (e) { }
+    },
+    AutoImageCapture: function () {
+        try {
+            var data = canvas.toDataURL("image/jpeg");
+            objWebcamHandler.AutoImageCaptureUploadPic();
+        }
+        catch (e) { }
+    },
+    AutoImageCaptureUploadPic: function () {
+        try {
+            // Generate the image data
+            var Pic = document.getElementById("canvas").toDataURL("image/jpeg");
+            Pic = Pic.replace(/^data:image\/(png|jpg|jpeg);base64,/, "")
+            // Sending the image data to Server
+            var message = JSON.stringify({ imageData: Pic, imageindex: (15 * 1), TestStartDateTime: "fs" });
+			document.getElementById("msg").innerHTML += " " + " essage =" + message;
+        } catch (e) { }
+    },
+    AutoImageCaptureUploadPicSuccessInterval: function (response) {
+        try { 
+			document.getElementById("msg").innerHTML += " " + "This is success";
+        }
+        catch (e) { }
+    },
+    AutoImageCaptureUploadPicSuccess: function (response) {
+        try {
+		debugger;
+            if (objWebcamHandler.imgIndex >= 0)
+                objWebcamHandler.WebCameventListener();
+        }
+        catch (e) { }
+    },
+    resubmitFailure: function (msResponse) {
+    },
+    OnSuccessAutoSuspendExam: function (response) {
+        try {
+        }
+        catch (e) { }
+    },
+    OnFailureAutoSuspendExam: function (status) {
+    },
+    capturePhoto: function (repeaterIndex) {
+        video.src = "";
+        document.getElementById("capImage").innerHTML = "";
+        document.getElementById("webcam").style.display = "block";
+        document.getElementById("capImage").style.display = "none";
+        document.getElementById("captureBtnDivId").style.display = "block";
+        if (navigator.getUserMedia) { // Standard
+            navigator.getUserMedia({ "video": true }, function (stream) {
+                video.src = stream;
+                video.play();
+            }, errBack);
+        } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+            navigator.webkitGetUserMedia({ "video": true }, function (stream) {
+                if (typeof (video.srcObject) != 'undefined')
+                    video.srcObject = stream;
+                else
+                    video.src = window.URL.createObjectURL(stream);
+                video.play();
+            }, errBack);
+        }
+        else if (navigator.mozGetUserMedia) { // Firefox-prefixed
+            navigator.mozGetUserMedia({ "video": true }, function (stream) {
+                if (typeof (video.srcObject) != 'undefined')
+                    video.srcObject = stream;
+                else
+                    video.src = window.URL.createObjectURL(stream);
+                video.play();
+            }, errBack);
+        }
+    }
+}
+var objWebcamHandler = new WebcamHandler();
+
+objWebcamHandler.WebCamIntialize();
+
+</script>
