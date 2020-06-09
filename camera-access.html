@@ -2,14 +2,19 @@
 <html>
 <body>
 
-<button onclick="myFunction()">Show Alert</button>
+<button onclick="myFunction1()">Show Alert</button>
+<button onclick="myFunction2()">Open Window</button>
 <video id="player" controls autoplay></video>
 <button id="capture">Capture</button>
 <canvas id="canvas" width=320 height=240></canvas>
 <script>
   
-  function myFunction() {
+  function myFunction1() {
     alert("I am an alert box!");
+  }
+
+  function myFunction2() {
+    window.open("https://www.w3schools.com");
   }
   
   const player = document.getElementById('player');
@@ -26,6 +31,15 @@
     context.drawImage(player, 0, 0, canvas.width, canvas.height);
   });
 
+  // Attach the video stream to the video element and autoplay.
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+      player.srcObject = stream;
+    });
+</script>
+
+</body>
+</html> 
   // Attach the video stream to the video element and autoplay.
   navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
