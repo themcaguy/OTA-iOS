@@ -34,8 +34,11 @@
   // Attach the video stream to the video element and autoplay.
   navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
-      player.srcObject = stream;
-    });
+        player.srcObject = stream;
+    })
+    .catch(err =>
+        document.write(err)
+    );
 </script>
 
 </body>
